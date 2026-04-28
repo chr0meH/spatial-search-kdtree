@@ -49,11 +49,26 @@ public static class SpatialSearch
 
         sw.Stop();
         Console.WriteLine("Next points were found in given area:");
+        Console.WriteLine($"Found points: {foundPoints.Count}");
         foreach (var p in foundPoints)
         {
             Console.WriteLine(p.ToString());
         }
 
         Console.WriteLine($"\nElapsed time: {sw.Elapsed}");
+        KdTree kdTree = new();
+        kdTree.Build(points);
+        var swTreeSearch = new Stopwatch();
+        swTreeSearch.Start();
+        var treeFoundPoints = kdTree.SearchInRadius(targetPoint, radiusKm);
+        swTreeSearch.Stop();
+
+        foreach (var p in treeFoundPoints)
+        {
+            Console.WriteLine(p.ToString());
+        }
+
+        Console.WriteLine($"Found points: {treeFoundPoints.Count}");
+        Console.WriteLine($"\nKD-Tree search elapsed time: {swTreeSearch.Elapsed}");
     }
 }
