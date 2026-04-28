@@ -1,33 +1,55 @@
+
+using System.Globalization;
+
 namespace SpatialSearch;
 
 public class Point
 {
     public readonly double Latitude;
     public readonly double Longitude;
-    
+    public readonly string Type;
+    public readonly string Name;
     public Point(List<string> entries)
     {
-        throw new NotImplementedException();
+        Latitude = double.Parse(entries[0].Replace(',', '.'), CultureInfo.InvariantCulture);
+        Longitude = double.Parse(entries[1].Replace(',', '.'), CultureInfo.InvariantCulture);
+        if (entries.Count >= 5)
+        {
+            Type = entries[2];
+            Name = entries[4];
+        }
+        else
+        {
+            Type = "";
+            Name = "";
+        }
     }
     
     public Point(double latitude, double longitude)
     {
         Latitude = latitude;
         Longitude = longitude;
+        Type = "";
+        Name = "";
     }
     
     public override string ToString()
     {
-        throw new NotImplementedException();
+        return $"{Latitude};{Longitude};{Type};{Name}";
+        
     }
 
     public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        if (obj is Point other)
+        {
+            return this.Latitude == other.Latitude && this.Longitude == other.Longitude;
+        }
+        return false;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return HashCode.Combine(Math.Round(Latitude, 7), Math.Round(Longitude, 7));
     }
 }
